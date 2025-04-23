@@ -15,6 +15,9 @@ class ServerController extends GetxController {
   bool _serverInitialized = false;
   bool get serverInitialized =>_serverInitialized;
 
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
   /// Starts both WebSocket and HTTP servers.
   Future<void> initServer() async {
     if (_serverInitialized) return;
@@ -25,15 +28,19 @@ class ServerController extends GetxController {
       log('🛰️ WebSocket Server running at ws://$ip:$_port');
 
       _socketUrl = "$ip:$_port";
-      _serverInitialized=true;
+      _serverInitialized = true;
+      _errorMessage = null;
       update();
 
       _wsServer!.listen(_handleUpgrade);
     } catch (e) {
-      _serverInitialized=false;
-      log("❌ Failed to start server: $e");
+      _serverInitialized = false;
+      _errorMessage = "Failed to start server: $e";
+      log("❌ $_errorMessage");
+      update(); // Update UI
     }
   }
+
 
   /// Returns the first non-loopback IPv4 address, or null if none
   Future<String?> _getLocalIpAddress() async {

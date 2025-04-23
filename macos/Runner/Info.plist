@@ -28,5 +28,14 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>com.apple.security.network.server</key>
+    <true/>
+    <key>com.apple.security.network.client</key>
+    <true/>
+    <key>com.apple.security.network.incoming</key>
+    <true/>
+    <key>com.apple.security.network.outgoing</key>
+    <true/>
+
 </dict>
 </plist>
