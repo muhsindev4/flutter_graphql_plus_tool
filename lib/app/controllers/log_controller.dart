@@ -14,4 +14,9 @@ class LogController extends GetxController{
     update();
   }
 
+  void clearAll(){
+    _logs.clear();
+    update();
+  }
+
 }
