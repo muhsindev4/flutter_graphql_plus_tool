@@ -7,8 +7,7 @@ extension OperationTypeExtension on OperationType {
 }
 
 extension StringFormatter on String {
-
-  OperationType get  fromString {
+  OperationType get fromString {
     return OperationType.values.firstWhere(
           (e) => e.name.toLowerCase() == toLowerCase(),
       orElse: () => OperationType.query,
@@ -22,6 +21,7 @@ class GraphQLRequestLog {
   final String operationName;
   final String query;
   final Map<String, dynamic>? variables;
+  final Map<String, dynamic>? header;
   final dynamic responseData;
   final String? errorMessage;
   final int durationMs;
@@ -33,6 +33,7 @@ class GraphQLRequestLog {
     required this.operationName,
     required this.query,
     this.variables,
+    this.header,
     this.responseData,
     this.errorMessage,
     required this.durationMs,
@@ -44,13 +45,19 @@ class GraphQLRequestLog {
       id: json['id'],
       operationType: json['operationType'].toString().fromString,
       operationName: json['operationName'],
-      variables: json['variables'] != null
+      variables:
+      json['variables'] != null
           ? Map<String, dynamic>.from(json['variables'])
+          : null,
+      header:
+      json['header'] != null
+          ? Map<String, dynamic>.from(json['header'])
           : null,
       responseData: json['responseData'],
       errorMessage: json['errorMessage'],
       durationMs: json['durationMs'],
-      timestamp: DateTime.parse(json['timestamp']), query: json['query'],
+      timestamp: DateTime.parse(json['timestamp']),
+      query: json['query'],
     );
   }
 
@@ -61,6 +68,7 @@ class GraphQLRequestLog {
       'operationName': operationName,
       'query': query,
       'variables': variables,
+      'header': header,
       'responseData': responseData,
       'errorMessage': errorMessage,
       'durationMs': durationMs,
@@ -76,20 +84,23 @@ class GraphQLRequestLog {
     String? operationName,
     String? query,
     Map<String, dynamic>? variables,
+    Map<String, dynamic>? header,
     dynamic responseData,
     String? errorMessage,
     int? durationMs,
     DateTime? timestamp,
   }) {
     return GraphQLRequestLog(
-        id: id ?? this.id,
-        operationType: operationType ?? this.operationType,
-        operationName: operationName ?? this.operationName,
-        variables: variables ?? this.variables,
-        responseData: responseData ?? this.responseData,
-        errorMessage: errorMessage ?? this.errorMessage,
-        durationMs: durationMs ?? this.durationMs,
-        timestamp: timestamp ?? this.timestamp, query:  query ?? this.query
+      id: id ?? this.id,
+      operationType: operationType ?? this.operationType,
+      operationName: operationName ?? this.operationName,
+      variables: variables ?? this.variables,
+      header: header ?? this.header,
+      responseData: responseData ?? this.responseData,
+      errorMessage: errorMessage ?? this.errorMessage,
+      durationMs: durationMs ?? this.durationMs,
+      timestamp: timestamp ?? this.timestamp,
+      query: query ?? this.query,
     );
   }
 

@@ -47,6 +47,8 @@ class LogPage extends StatelessWidget {
                       _buildSection('Variables', formatJson(log.variables!)),
                     if (log.responseData != null)
                       _buildSection('Response', formatJson(log.responseData as Map<String, dynamic>)),
+                    if (log.header != null)
+                      _buildSection('Header', formatJson(log.header as Map<String, dynamic>)),
                     if (log.errorMessage != null)
                       _buildSection('Error', log.errorMessage!, isError: true),
                   ],
